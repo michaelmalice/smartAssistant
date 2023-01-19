@@ -135,16 +135,16 @@ if __name__ == '__main__':
 							driver.maximize_window()
 							#launch URL
 							driver.get("https://huggingface.co/spaces/Intel/Stable-Diffusion");
-							element = driver.find_element_by_xpath('/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/div/div[1]/label/textarea')
+							element = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/div/div[1]/label/textarea')
 							element.send_keys(' '.join(query))
-							element = driver.find_element_by_xpath('/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/button')
+							element = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/button')
 							element.click()
 							time.sleep(7)
 
 							#open file in write and binary mode
 							with open('image.png', 'wb') as file:
 							#identify image to be captured
-								l = driver.find_element_by_xpath('/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[2]/div/img')
+								l = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[2]/div/img')
 								#write file
 								file.write(l.screenshot_as_png)
 							#close browser
