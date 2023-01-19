@@ -24,6 +24,7 @@ from ecapture import ecapture as ec
 from bs4 import BeautifulSoup
 import win32com.client as wincl
 from urllib.request import urlopen
+from selenium import webdriver
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -127,6 +128,27 @@ if __name__ == '__main__':
 							indx = query.lower().split().index('of')
 							query = query.split()[indx + 1:]
 							speak("Generating an image of " + ' '.join(query))
+							#set chromedriver.exe path
+							driver = webdriver.Chrome(executable_path=".\chromedriver.exe")
+							driver.implicitly_wait(0.5)
+							#maximize browser
+							driver.maximize_window()
+							#launch URL
+							driver.get("https://huggingface.co/spaces/Intel/Stable-Diffusion");
+							element = driver.find_element_by_xpath('/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/div/div[1]/label/textarea')
+							element.send_keys(' '.join(query))
+							element = driver.find_element_by_xpath('/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/button')
+							element.click()
+							time.sleep(7)
+
+							#open file in write and binary mode
+							with open('image.png', 'wb') as file:
+							#identify image to be captured
+								l = driver.find_element_by_xpath('/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[2]/div/img')
+								#write file
+								file.write(l.screenshot_as_png)
+							#close browser
+							driver.quit()
 							#requests.get(URL to SPR Stable Diffusion)
 
 			elif 'open youtube' in query:

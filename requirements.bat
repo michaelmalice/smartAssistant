@@ -11,3 +11,4 @@ pip install winshell
 pip install feedparser
 pip install clint
 pip install pyaudio
+pip install selenium
