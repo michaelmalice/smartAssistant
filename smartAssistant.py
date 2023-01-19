@@ -25,6 +25,7 @@ from bs4 import BeautifulSoup
 import win32com.client as wincl
 from urllib.request import urlopen
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
