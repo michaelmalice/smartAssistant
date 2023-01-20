@@ -23,7 +23,7 @@ from clint.textui import progress
 from ecapture import ecapture as ec
 from bs4 import BeautifulSoup
 import win32com.client as wincl
-from urllib.request import urlopen
+from urllib.request import urlopen, urlretrieve
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -135,21 +135,29 @@ if __name__ == '__main__':
 							#maximize browser
 							driver.maximize_window()
 							#launch URL
-							driver.get("https://huggingface.co/spaces/Intel/Stable-Diffusion");
+							driver.get("https://huggingface.co/spaces/Intel/Stable-Diffusion")
+							time.sleep(5)
+							frame = driver.find_element(By.XPATH, "/html/body/div/main/div/iframe")
+							driver.switch_to.frame(frame)
 							element = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/div/div[1]/label/textarea')
+							element.clear()
 							element.send_keys(' '.join(query))
 							element = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/button')
 							element.click()
-							time.sleep(7)
+							time.sleep(15)
+							l = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[2]/div/img')
+							src = l.get_attribute('src')
+							urlretrieve(src, 'image.png')
 
 							#open file in write and binary mode
-							with open('image.png', 'wb') as file:
+							#with open('image.png', 'wb') as file:
 							#identify image to be captured
-								l = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[2]/div/img')
+								#l = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[2]/div/img')
 								#write file
-								file.write(l.screenshot_as_png)
+								#file.write(l.screenshot_as_png)
 							#close browser
 							driver.quit()
+							os.startfile('.\image.png')
 							#requests.get(URL to SPR Stable Diffusion)
 
 			elif 'open youtube' in query:
