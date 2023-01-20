@@ -104,6 +104,8 @@ if __name__ == '__main__':
 	clear()
 	#wishMe()
 	#username()
+
+	lastImagePrompt = ""
 	
 	while True:
 		
@@ -126,42 +128,78 @@ if __name__ == '__main__':
 				speak(results)
 
 			elif 'generate an image of' in query:
-							indx = query.lower().split().index('of')
-							query = query.split()[indx + 1:]
-							speak("Generating an image of " + ' '.join(query))
-							#set chromedriver.exe path
-							driver = webdriver.Chrome(executable_path=".\chromedriver.exe")
-							driver.implicitly_wait(0.5)
-							#maximize browser
-							driver.maximize_window()
-							#launch URL
-							driver.get("https://huggingface.co/spaces/Intel/Stable-Diffusion")
-							time.sleep(5)
-							frame = driver.find_element(By.XPATH, "/html/body/div/main/div/iframe")
-							driver.switch_to.frame(frame)
-							element = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/div/div[1]/label/textarea')
-							element.clear()
-							element.send_keys(' '.join(query))
-							element = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/div/div[3]/div[2]/div/input')
-							element.clear()
-							element.send_keys(str(random.randint(0, 2147483647)))
-							element = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/button')
-							element.click()
-							time.sleep(15)
-							l = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[2]/div/img')
-							src = l.get_attribute('src')
-							urlretrieve(src, 'image.png')
+				indx = query.lower().split().index('of')
+				query = query.split()[indx + 1:]
+				speak("Generating an image of " + ' '.join(query))
+				#set chromedriver.exe path
+				driver = webdriver.Chrome(executable_path=".\chromedriver.exe")
+				driver.implicitly_wait(0.5)
+				#maximize browser
+				driver.maximize_window()
+				#launch URL
+				driver.get("https://huggingface.co/spaces/Intel/Stable-Diffusion")
+				time.sleep(5)
+				frame = driver.find_element(By.XPATH, "/html/body/div/main/div/iframe")
+				driver.switch_to.frame(frame)
+				element = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/div/div[1]/label/textarea')
+				element.clear()
+				element.send_keys(' '.join(query))
+				element = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/div/div[3]/div[2]/div/input')
+				element.clear()
+				element.send_keys(str(random.randint(0, 2147483647)))
+				element = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/button')
+				element.click()
+				time.sleep(15)
+				l = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[2]/div/img')
+				src = l.get_attribute('src')
+				urlretrieve(src, 'image.png')
 
-							#open file in write and binary mode
-							#with open('image.png', 'wb') as file:
-							#identify image to be captured
-								#l = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[2]/div/img')
-								#write file
-								#file.write(l.screenshot_as_png)
-							#close browser
-							driver.quit()
-							os.startfile('.\image.png')
-							#requests.get(URL to SPR Stable Diffusion)
+				#open file in write and binary mode
+				#with open('image.png', 'wb') as file:
+				#identify image to be captured
+					#l = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[2]/div/img')
+					#write file
+					#file.write(l.screenshot_as_png)
+				#close browser
+				driver.quit()
+				os.startfile('.\image.png')
+				lastImagePrompt = ' '.join(query)
+				#requests.get(URL to SPR Stable Diffusion)
+
+			elif 'regenerate' in query:
+				speak("Regenerating an image of " + lastImagePrompt)
+				#set chromedriver.exe path
+				driver = webdriver.Chrome(executable_path=".\chromedriver.exe")
+				driver.implicitly_wait(0.5)
+				#maximize browser
+				driver.maximize_window()
+				#launch URL
+				driver.get("https://huggingface.co/spaces/Intel/Stable-Diffusion")
+				time.sleep(5)
+				frame = driver.find_element(By.XPATH, "/html/body/div/main/div/iframe")
+				driver.switch_to.frame(frame)
+				element = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/div/div[1]/label/textarea')
+				element.clear()
+				element.send_keys(lastImagePrompt)
+				element = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/div/div[3]/div[2]/div/input')
+				element.clear()
+				element.send_keys(str(random.randint(0, 2147483647)))
+				element = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[1]/button')
+				element.click()
+				time.sleep(15)
+				l = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[2]/div/img')
+				src = l.get_attribute('src')
+				urlretrieve(src, 'image.png')
+
+				#open file in write and binary mode
+				#with open('image.png', 'wb') as file:
+				#identify image to be captured
+					#l = driver.find_element(By.XPATH, '/html/body/gradio-app/div/div[2]/div/div/div[3]/div[2]/div/div/div[2]/div/img')
+					#write file
+					#file.write(l.screenshot_as_png)
+				#close browser
+				driver.quit()
+				os.startfile('.\image.png')
 
 			elif 'open youtube' in query:
 				speak("Here you go to Youtube\n")
