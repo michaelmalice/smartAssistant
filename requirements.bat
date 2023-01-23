@@ -12,3 +12,4 @@ pip install feedparser
 pip install clint
 pip install pyaudio
 pip install selenium
+python3 -m pip install git+https://github.com/openai/whisper.git soundfile
